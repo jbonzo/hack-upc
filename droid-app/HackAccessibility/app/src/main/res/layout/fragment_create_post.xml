@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,8 +6,89 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    android:weightSum="100"
     tools:context="hackupc.gatech.hackaccessibility.CreatePostActivityFragment"
     tools:showIn="@layout/activity_create_post">
 
+    <com.google.android.gms.maps.MapView
+        xmlns:map="http://schemas.android.com/apk/res-auto"
 
-</RelativeLayout>
+        android:id="@+id/mapSnapshot"
+        android:layout_weight="30"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:paddingBottom="@dimen/item_below_margin"
+        android:apiKey="@string/google_maps_key"
+        map:cameraZoom="15"
+        map:mapType="normal"
+        map:liteMode="true" />
+
+    <RelativeLayout
+        android:layout_weight="70"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.AppCompat.Headline"
+            android:paddingRight="@dimen/item_edittext_margin"
+            android:paddingBottom="@dimen/item_below_margin"
+            android:text="Title:"
+            />
+
+        <EditText
+            android:id="@+id/txtTitle"
+            android:layout_toRightOf="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvDescription"
+            android:layout_below="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.AppCompat.Headline"
+            android:paddingRight="@dimen/item_edittext_margin"
+            android:text="Description:"
+            />
+
+        <EditText
+            android:id="@+id/txtDescription"
+            android:layout_toRightOf="@+id/tvDescription"
+            android:layout_below="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:gravity="top|left"
+            android:minLines="5"
+            android:lines="5"
+            android:maxLines="5"
+            android:scrollbars="vertical"
+            />
+
+        <Button
+            android:id="@+id/btnConfirm"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Confirm"
+            />
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_alignParentBottom="true"
+            android:layout_toLeftOf="@+id/btnConfirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            />
+
+    </RelativeLayout>
+
+
+
+</LinearLayout>

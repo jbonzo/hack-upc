@@ -2,6 +2,7 @@ package hackupc.gatech.hackaccessibility;
 
 import android.*;
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
@@ -104,7 +105,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                  latLng.latitude, latLng.longitude, distance);
 
         if (distance[0] <= CIRCLE_RADIUS) {
-            //add new thingy
+            Intent intent = new Intent(this, CreatePostActivity.class);
+            intent.putExtra(CreatePostActivity.LATITUDE_EXTRA, latLng.latitude);
+            intent.putExtra(CreatePostActivity.LONGITUDE_EXTRA, latLng.longitude);
+
+            this.startActivityForResult(intent, CreatePostActivity.CREATE_POST_REQUEST);
         }
         else {
             Toast.makeText(this, "You can only make new posts within 10 miles of your current location", Toast.LENGTH_LONG).show();
