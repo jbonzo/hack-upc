@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">HackAccessibility</string>
     <string name="title_activity_maps">Hack Accessibility</string>
+    <string name="title_activity_create_post">CreatePostActivity</string>
+    <string name="action_settings">Settings</string>
 </resources>
