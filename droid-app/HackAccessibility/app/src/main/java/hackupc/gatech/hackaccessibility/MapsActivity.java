@@ -27,6 +27,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.List;
+
+import hackupc.gatech.hackaccessibility.model.Post;
+import hackupc.gatech.hackaccessibility.net.DataTroveInstance;
+
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener,
         GoogleMap.OnInfoWindowClickListener,
         GoogleMap.OnMapClickListener {
@@ -42,29 +47,35 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private LatLng mCurLocLatLng = null;
     private LocationManager mLocationManager;
-    private GoogleApiClient mApiClient;
     private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        if (!DataTroveInstance.IsInitialized()) {
+            DataTroveInstance.InitInstance(getApplicationContext());
+        }
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        if (mApiClient == null) {
-            mApiClient = new GoogleApiClient.Builder(this)
-                    .addApi(LocationServices.API)
-                    .build(); // TODO: add listeners and stuff
-        }
 
         mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
 
     }
 
+    private void addExistingPosts() {
+        List<Post> posts = DataTroveInstance.GetInstance().loadPosts();
+
+        for (Post post : posts) {
+            LatLng latLng = new LatLng(post.getLatitude(), post.getLongitude());
+            mMap.addMarker(new MarkerOptions().position(latLng).title(post.getTitle()));
+        }
+    }
 
     /**
      * Manipulates the map once available.
@@ -86,6 +97,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             return;
         }
         Log.d("onMapReady", "Map ready, request location");
+
+        addExistingPosts();
 
         mLocationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
 
@@ -133,6 +146,22 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             n++;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("ACtivity Result", "request: " + requestCode + ", result: " + resultCode);
+
+        if (requestCode == CreatePostActivity.CREATE_POST_REQUEST) {
+            if (resultCode == CreatePostActivity.RESULT_SUCCESS) {
+                double latitude = data.getDoubleExtra(CreatePostActivity.LATITUDE_EXTRA, 0);
+                double longitude = data.getDoubleExtra(CreatePostActivity.LONGITUDE_EXTRA, 0);
+                String title = data.getStringExtra(CreatePostActivity.TITLE_EXTRA);
+
+                mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title(title));
+            }
+        }
+
     }
 
     @Override

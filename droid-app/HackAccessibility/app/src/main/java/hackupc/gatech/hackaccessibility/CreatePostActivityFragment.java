@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -17,6 +18,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import hackupc.gatech.hackaccessibility.model.Post;
+import hackupc.gatech.hackaccessibility.net.DataTroveInstance;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -55,35 +59,11 @@ public class CreatePostActivityFragment extends Fragment implements OnMapReadyCa
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
-        Button btnConfirm = (Button) view.findViewById(R.id.btnConfirm);
-        final Button btnCancel = (Button) view.findViewById(R.id.btnCancel);
-
-        btnConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                btnConfirm_onClick(view);
-            }
-        });
-
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                btnCancel_onClick(view);
-            }
-        });
-
-
         return view;
 
     }
 
-    private void btnConfirm_onClick(View view) {
-        getActivity().onBackPressed();
-    }
 
-    public void btnCancel_onClick(View view) {
-        getActivity().onBackPressed();
-    }
 
     @Override
     public void onResume() {

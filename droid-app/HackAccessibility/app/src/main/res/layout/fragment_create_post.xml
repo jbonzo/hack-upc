@@ -75,6 +75,7 @@
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="btnConfirm_onClick"
             android:text="Confirm"
             />
 
@@ -84,6 +85,7 @@
             android:layout_toLeftOf="@+id/btnConfirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="btnCancel_onClick"
             android:text="Cancel"
             />
 
