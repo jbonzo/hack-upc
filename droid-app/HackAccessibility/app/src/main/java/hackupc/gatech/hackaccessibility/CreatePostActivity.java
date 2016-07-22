@@ -21,6 +21,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import hackupc.gatech.hackaccessibility.model.Post;
+import hackupc.gatech.hackaccessibility.model.User;
 import hackupc.gatech.hackaccessibility.net.DataTroveInstance;
 
 public class CreatePostActivity extends AppCompatActivity {
@@ -85,7 +86,7 @@ public class CreatePostActivity extends AppCompatActivity {
     }
 
     private Post getPostFromInput() {
-        String author = "Terry Tester";
+        String author = User.GetName();
         String title = ((EditText) findViewById(R.id.txtTitle)).getText().toString();
         String description = ((EditText) findViewById(R.id.txtDescription)).getText().toString();
         String category = (String) ((Spinner) findViewById(R.id.spnCategory)).getSelectedItem();

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import hackupc.gatech.hackaccessibility.model.Post;
+import hackupc.gatech.hackaccessibility.model.Vote;
 
 /**
  * Created by michael on 7/22/16.
@@ -40,19 +41,46 @@ public class LocalStorageDataTrove implements DataTrove {
     }
 
     @Override
-    public boolean upvotePost(Post post) {
-        return votePost(post, 1);
+    public int upvotePost(Post post) {
+        int res = 0;
+        switch (getVote(post)) {
+            case UP_VOTE: res = votePost(post, Vote.NO_VOTE.name(), -1); break;
+            case DOWN_VOTE: res = votePost(post, Vote.UP_VOTE.name(), 2); break;
+            case NO_VOTE: res = votePost(post, Vote.UP_VOTE.name(), 1); break;
+        }
+
+        return res;
     }
 
     @Override
-    public boolean downvotePost(Post post) {
-        return votePost(post, -1);
+    public int downvotePost(Post post) {
+        int res = 0;
+        switch (getVote(post)) {
+            case UP_VOTE: res = votePost(post, Vote.DOWN_VOTE.name(), -2); break;
+            case DOWN_VOTE: res = votePost(post, Vote.NO_VOTE.name(), 1); break;
+            case NO_VOTE: res = votePost(post, Vote.DOWN_VOTE.name(), -1); break;
+        }
+
+        return res;
     }
 
-    private boolean votePost(Post post, int dir) {
+    private int votePost(Post post, String voteType, int dir) {
         Post p = getPost(post.hashCode());
         p.addVote(dir);
-        return savePost(p);
+        savePost(p);
+
+        SharedPreferences.Editor editor = mSharedPrefs.edit();
+        editor.putString("Vote_" + post.hashCode(), voteType);
+        editor.commit();
+
+        return p.getVotes();
+    }
+
+    @Override
+    public Vote getVote(Post post) {
+        String voteType = mSharedPrefs.getString("Vote_" + post.hashCode(), Vote.NO_VOTE.name());
+        Log.d("getVote", "Got Vote! (" + voteType + ")");
+        return Vote.valueOf(voteType);
     }
 
     @Override

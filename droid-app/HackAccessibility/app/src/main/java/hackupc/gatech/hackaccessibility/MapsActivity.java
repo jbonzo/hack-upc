@@ -11,11 +11,13 @@ import android.location.LocationListener;
 import android.os.Bundle;
 import android.os.Looper;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -29,6 +31,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.HashSet;
 import java.util.List;
 
 import hackupc.gatech.hackaccessibility.model.Post;
@@ -40,19 +43,23 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         GoogleMap.OnMapClickListener {
 
     private static final int CIRCLE_FILL_COLOR = 0x502493B5;
+    private static final int LOCATION_FILL_COLOR = 0xAA0000FF;
 
     private static final int GET_LOCATION_PERMISSION_CODE = 1000;
 
     private static final double MILES_TO_METERS = 1609.34;
     private static final double CIRCLE_RADIUS = 10 * MILES_TO_METERS;
 
-    private static final float INITIAL_ZOOM_LEVEL = 10.33f;
+    private static final float INITIAL_ZOOM_LEVEL = 16.33f;
 
     private LatLng mCurLocLatLng = null;
     private LocationManager mLocationManager;
     private GoogleMap mMap;
 
+    private TextView tvCurUser;
     private Button btnChangeUser;
+
+    private Marker mSelectedMarker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,11 +71,20 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
         btnChangeUser = (Button) findViewById(R.id.btnChangeUser);
+        tvCurUser = (TextView) findViewById(R.id.tvCurUser);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                centerMap();
+            }
+        });
 
         mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
@@ -82,6 +98,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             LatLng latLng = new LatLng(post.getLatitude(), post.getLongitude());
             mMap.addMarker(new MarkerOptions().position(latLng).title(post.getTitle()));
         }
+    }
+
+    private void centerMap() {
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mCurLocLatLng, INITIAL_ZOOM_LEVEL));
     }
 
     /**
@@ -118,7 +138,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onInfoWindowClick(Marker marker) {
+        mSelectedMarker = marker;
+
         Log.d("Info window clicked", "Info Clicked! title: " + marker.getTitle());
+        Intent intent = new Intent(this, ViewPost.class);
+        intent.putExtra(CreatePostActivity.LATITUDE_EXTRA, marker.getPosition().latitude);
+        intent.putExtra(CreatePostActivity.LONGITUDE_EXTRA, marker.getPosition().longitude);
+        intent.putExtra(CreatePostActivity.TITLE_EXTRA, marker.getTitle());
+
+        startActivityForResult(intent, ViewPost.VIEW_POST_REQUEST);
     }
 
     @Override
@@ -171,6 +199,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title(title));
             }
         }
+        else if (requestCode == ViewPost.VIEW_POST_REQUEST) {
+            if (resultCode == ViewPost.RESULT_REMOVE) {
+                mSelectedMarker.remove();
+                mSelectedMarker = null;
+            }
+        }
 
     }
 
@@ -180,12 +214,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mCurLocLatLng = new LatLng(location.getLatitude(), location.getLongitude());
 
-        LatLng bcn = new LatLng(41.388976799774106,2.164280153810978);
-
-        mMap.addMarker(new MarkerOptions().position(bcn).title("Marker in BCN"));
-        mMap.addMarker(new MarkerOptions().position(mCurLocLatLng).title("Current Location"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(mCurLocLatLng));
         mMap.moveCamera(CameraUpdateFactory.zoomTo(INITIAL_ZOOM_LEVEL));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(mCurLocLatLng));
 
         CircleOptions clickableRegion = new CircleOptions();
         clickableRegion.center(mCurLocLatLng);
@@ -193,8 +223,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         clickableRegion.fillColor(CIRCLE_FILL_COLOR);
         clickableRegion.strokeWidth(0);
 
+        CircleOptions curLocationCircle = new CircleOptions();
+        curLocationCircle.center(mCurLocLatLng);
+        curLocationCircle.radius(50);
+        curLocationCircle.fillColor(LOCATION_FILL_COLOR);
+        curLocationCircle.strokeWidth(0);
 
         mMap.addCircle(clickableRegion);
+        mMap.addCircle(curLocationCircle);
 
     }
 
@@ -214,8 +250,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     public void btnChangeUser_onClick(View view) {
+        btnChangeUser.setText("Be " + User.GetName() + "!");
+
         User.isTerry = !User.isTerry;
-        
-        btnChangeUser.setText("Be" + User.GetName() + "!");
+
+        tvCurUser.setText("Logged in as: " + User.GetName());
     }
 }

@@ -1,4 +1,6 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent" android:layout_height="fill_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent" android:layout_height="fill_parent">
 
     <Button
         android:layout_width="wrap_content"
@@ -8,8 +10,15 @@
         android:onClick="btnChangeUser_onClick"
         android:text="Be Jerry!" />
 
+    <TextView
+        android:id="@+id/tvCurUser"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Logged in as: Terry Tester"/>
+
     <fragment
-        xmlns:map="http://schemas.android.com/apk/res-auto"
+
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_below="@id/btnChangeUser"
         android:id="@+id/map"
@@ -17,5 +26,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="hackupc.gatech.hackaccessibility.MapsActivity" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/fab_margin"
+        app:backgroundTint="@color/colorPrimary"
+        android:src="@drawable/ic_current_location" />
+
 </RelativeLayout>
 

@@ -34,8 +34,7 @@
             android:id="@+id/tvViewTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/TextAppearance.AppCompat.Title"
-            android:paddingRight="@dimen/item_edittext_margin"
+            style="@style/TextAppearance.AppCompat.Headline"
             android:paddingBottom="@dimen/item_below_margin"
             android:text="Title:"
             />
@@ -45,8 +44,7 @@
             android:layout_below="@+id/tvViewTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/TextAppearance.AppCompat.Headline"
-            android:paddingRight="@dimen/item_edittext_margin"
+            style="@style/TextAppearance.AppCompat.Large"
             android:paddingBottom="@dimen/item_below_margin"
             android:text="Category:"
             />
@@ -57,18 +55,67 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/TextAppearance.AppCompat.Body1"
-            android:paddingRight="@dimen/item_edittext_margin"
+            android:paddingBottom="@dimen/item_below_margin"
             android:text="Description:"
             />
 
+        <Button
+            android:id="@+id/btnRemove"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Remove Post"
+            android:onClick="btnRemove_onClick"
+            />
+
+        <TextView
+            android:id="@+id/tvBottomLeftText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            />
+
         <LinearLayout
+            android:id="@+id/layoutVotes"
+            android:layout_below="@+id/tvViewDescription"
             android:weightSum="100"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            
+            <ImageButton
+                android:id="@+id/imgThumbsDown"
+                android:layout_weight="35"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:onClick="btnThumbsDown_onClick"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_thumbs_down"/>
+
+            <TextView
+                android:id="@+id/tvVotes"
+                android:layout_weight="30"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="36pt"
+                android:textAlignment="center"
+                android:layout_gravity="center"
+                android:text="0"/>
+
+            <ImageButton
+                android:id="@+id/imgThumbsUp"
+                android:layout_weight="35"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:onClick="btnThumbsUp_onClick"
+                android:scaleType="fitXY"
+                android:background="@drawable/negative_thumb_bg"
+                android:src="@drawable/ic_thumbs_up"/>
 
         </LinearLayout>
+
 
     </RelativeLayout>
 
