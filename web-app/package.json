@@ -1,0 +1,25 @@
+{
+  "name": "web-app",
+  "version": "0.0.0",
+  "description": "Webapp portion of HackUPC hack",
+  "main": "(app.min.js)",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jbonzo/hack-upc.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jbonzo/hack-upc/issues"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-concat": "^2.6.0",
+    "gulp-minify": "0.0.13",
+    "gulp-rename": "^1.2.2"
+  }
+}
