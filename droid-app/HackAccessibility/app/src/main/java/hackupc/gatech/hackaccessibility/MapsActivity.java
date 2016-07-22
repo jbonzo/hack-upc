@@ -14,6 +14,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -30,6 +32,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.List;
 
 import hackupc.gatech.hackaccessibility.model.Post;
+import hackupc.gatech.hackaccessibility.model.User;
 import hackupc.gatech.hackaccessibility.net.DataTroveInstance;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener,
@@ -49,6 +52,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private LocationManager mLocationManager;
     private GoogleMap mMap;
 
+    private Button btnChangeUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +62,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (!DataTroveInstance.IsInitialized()) {
             DataTroveInstance.InitInstance(getApplicationContext());
         }
+
+        btnChangeUser = (Button) findViewById(R.id.btnChangeUser);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -99,6 +106,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Log.d("onMapReady", "Map ready, request location");
 
         addExistingPosts();
+
+        mMap.setOnInfoWindowClickListener(this);
+        mMap.setOnMapClickListener(this);
 
         mLocationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
 
@@ -186,8 +196,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mMap.addCircle(clickableRegion);
 
-        mMap.setOnInfoWindowClickListener(this);
-        mMap.setOnMapClickListener(this);
     }
 
     @Override
@@ -203,5 +211,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onProviderDisabled(String s) {
         Log.d("onProviderDosanled", "Provider Disabled");
+    }
+
+    public void btnChangeUser_onClick(View view) {
+        User.isTerry = !User.isTerry;
+        
+        btnChangeUser.setText("Be" + User.GetName() + "!");
     }
 }

@@ -47,6 +47,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="hackupc.gatech.hackaccessibility.MapsActivity" />
         </activity>
+        <activity
+            android:name=".ViewPost"
+            android:label="@string/title_activity_view_post"
+            android:parentActivityName=".MapsActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="hackupc.gatech.hackaccessibility.MapsActivity" />
+        </activity>
     </application>
 
 </manifest>

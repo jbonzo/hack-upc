@@ -12,6 +12,9 @@ public interface DataTrove {
     boolean savePost(Post post);
     boolean deletePost(Post post);
 
+    boolean upvotePost(Post post);
+    boolean downvotePost(Post post);
+
     Post getPost(int hash);
 
 

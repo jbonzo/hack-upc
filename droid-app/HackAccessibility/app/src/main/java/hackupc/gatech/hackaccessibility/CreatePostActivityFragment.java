@@ -8,8 +8,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -58,6 +60,14 @@ public class CreatePostActivityFragment extends Fragment implements OnMapReadyCa
         mapView = (MapView) view.findViewById(R.id.mapSnapshot);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+
+        Spinner spnCategory = (Spinner) view.findViewById(R.id.spnCategory);
+        ArrayAdapter<CharSequence> catAdapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.post_categories_array, android.R.layout.simple_spinner_dropdown_item);
+
+        catAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spnCategory.setAdapter(catAdapter);
+
 
         return view;
 

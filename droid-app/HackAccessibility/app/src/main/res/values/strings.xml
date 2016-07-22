@@ -3,4 +3,12 @@
     <string name="title_activity_maps">Hack Accessibility</string>
     <string name="title_activity_create_post">CreatePostActivity</string>
     <string name="action_settings">Settings</string>
+
+    <string-array name="post_categories_array">
+        <item>Addition</item>
+        <item>Repair</item>
+        <item>Removal</item>
+    </string-array>
+    <string name="title_activity_view_post">ViewPost</string>
+
 </resources>

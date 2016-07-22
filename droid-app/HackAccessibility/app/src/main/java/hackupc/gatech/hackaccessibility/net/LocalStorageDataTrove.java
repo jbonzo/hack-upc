@@ -40,6 +40,22 @@ public class LocalStorageDataTrove implements DataTrove {
     }
 
     @Override
+    public boolean upvotePost(Post post) {
+        return votePost(post, 1);
+    }
+
+    @Override
+    public boolean downvotePost(Post post) {
+        return votePost(post, -1);
+    }
+
+    private boolean votePost(Post post, int dir) {
+        Post p = getPost(post.hashCode());
+        p.addVote(dir);
+        return savePost(p);
+    }
+
+    @Override
     public Post getPost(int hash) {
         String encoded = mSharedPrefs.getString("Post_" + hash, "");
         if (encoded == "") {

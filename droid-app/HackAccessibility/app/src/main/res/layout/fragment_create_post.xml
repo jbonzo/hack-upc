@@ -46,8 +46,29 @@
             android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/tvDescription"
+            android:id="@+id/tvCategory"
             android:layout_below="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.AppCompat.Headline"
+            android:paddingRight="@dimen/item_edittext_margin"
+            android:paddingBottom="@dimen/item_below_margin"
+            android:text="Category:"
+            />
+
+        <Spinner
+            android:id="@+id/spnCategory"
+            android:layout_below="@+id/tvTitle"
+            android:layout_toRightOf="@+id/tvCategory"
+            style="@style/Base.Widget.AppCompat.Spinner"
+            android:gravity="right"
+            android:textAlignment="gravity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></Spinner>
+
+        <TextView
+            android:id="@+id/tvDescription"
+            android:layout_below="@+id/tvCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/TextAppearance.AppCompat.Headline"
@@ -58,7 +79,7 @@
         <EditText
             android:id="@+id/txtDescription"
             android:layout_toRightOf="@+id/tvDescription"
-            android:layout_below="@+id/tvTitle"
+            android:layout_below="@+id/tvCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textMultiLine"

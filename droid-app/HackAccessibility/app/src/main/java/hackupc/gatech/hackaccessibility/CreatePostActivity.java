@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -31,6 +32,8 @@ public class CreatePostActivity extends AppCompatActivity {
     public static final int RESULT_SUCCESS = 1;
     public static final int RESULT_FAILURE = -1;
 
+    private View mView;
+
     private LatLng mLocation = null;
 
     private GoogleMap mMap;
@@ -47,7 +50,6 @@ public class CreatePostActivity extends AppCompatActivity {
         mLocation = new LatLng(recievingIntent.getDoubleExtra(CreatePostActivity.LATITUDE_EXTRA, 0),
                 recievingIntent.getDoubleExtra(CreatePostActivity.LONGITUDE_EXTRA, 0));
 
-
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,6 +63,10 @@ public class CreatePostActivity extends AppCompatActivity {
 
     public void btnConfirm_onClick(View view) {
         Post post = getPostFromInput();
+        if (post.hasEmptyFields()) {
+            Snackbar.make(view, "All fields are required!", Snackbar.LENGTH_LONG).show();
+            return;
+        }
 
         DataTroveInstance.GetInstance().savePost(post);
 
@@ -82,9 +88,10 @@ public class CreatePostActivity extends AppCompatActivity {
         String author = "Terry Tester";
         String title = ((EditText) findViewById(R.id.txtTitle)).getText().toString();
         String description = ((EditText) findViewById(R.id.txtDescription)).getText().toString();
+        String category = (String) ((Spinner) findViewById(R.id.spnCategory)).getSelectedItem();
 
         return new Post(author, title, description,
-                mLocation.latitude, mLocation.longitude);
+                mLocation.latitude, mLocation.longitude, category, "", 0);
     }
 
 }
